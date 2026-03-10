@@ -1,63 +1,301 @@
-# Base Template Android App
+# AdManagerSDK
 
-Kickstart your Android app development with this GitHub template repository. Designed by [Hridoy Chandra Das](https://github.com/ihridoydas), it provides essential tools without imposing code-writing opinions.
+A simple and powerful **AdMob Ad Manager library for Android (Jetpack Compose + Kotlin)** built on top of Google AdMob.
 
-## Why This Template?
+This library helps developers integrate **all AdMob ad formats quickly with minimal code**.
 
-- **Freedom to Choose:** No opinions on code structure or architecture. Developers decide on their own.
-- **Opinionated Tooling:** Configured dependency management, git hooks, code formatting, and static analysis for enhanced development.
+## Supported Ads
 
-Inspired by [AndroidAppTemplate](https://github.com/AdamMc331/AndroidAppTemplate).
+* App Open Ads
+* Interstitial Ads
+* Rewarded Ads
+* Rewarded Interstitial Ads
+* Banner Ads
+* Adaptive Banner Ads
+* Native Ads
+* Native Video Ads
 
-## Getting Started
+---
 
-1. Click "Use this template" to create a repository under your account.
-    ```dsl
-   
-   templateName             : "template",
-   templateAppId            : "template.app.id",
-   templateMaterialThemeName: "TemplateTheme",
-   newTemplateName          : "Project", [Enter your project name here]
-   newTemplateAppId         : "domain.yourname.app", [Enter your project package name here]
-   newMaterialThemeName     : "MyMaterialTheme", [Enter your project theme name here]
-   useHiltDependencies      : true,
-   useRoomDependencies      : true,
-   useRetrofitDependencies  : true,
-   usePaparazziDependencies : true,
-   
-   ```
-2. Customize by adjusting [setup.gradle](buildscripts/setup.gradle) and running `./gradlew renameTemplate`.
+# Features
 
-- Japanese [Readme here](https://github.com/ihridoydas/BaseTemplateAndroidApp/blob/develop/README_jp.md) 🇯🇵.
-- Bangla [Readme here](https://github.com/ihridoydas/BaseTemplateAndroidApp/blob/develop/README_bd.md) 🇧🇩.
-- Hindi [Readme here](https://github.com/ihridoydas/BaseTemplateAndroidApp/blob/develop/README_in.md) 🇮🇳.
+* Easy AdMob integration
+* Jetpack Compose support
+* Automatic ad preloading
+* Smart ad frequency control
+* Debug & Production ad IDs
+* Disable ads for premium users
+* Clean Kotlin architecture
 
-## What's Included
+---
 
-Explore third-party dependencies and documentation in [/documentation](/documentation). Notable inclusions:
+# Installation
 
-- [Ktlint](/documentation/StaticAnalysis.md) for code formatting.
-- [Detekt](/documentation/StaticAnalysis.md) for code smells.
-- [Git Hooks](/documentation/GitHooks.md) for static analysis checks.
-- [GitHub Actions](/documentation/GitHubActions.md) for continuous integration.
-- [LeakCanary](https://square.github.io/leakcanary/) for detecting memory leaks.
-- [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) and [Room](https://developer.android.com/training/data-storage/room) dependencies (removable via setup.gradle).
-- [Paparazzi](https://github.com/cashapp/paparazzi) dependency (removable via setup.gradle).
-- [Dokka](https://github.com/Kotlin/dokka) dependency, which document all project and module.
-- [Spotless](https://github.com/diffplug/spotless) dependency, which is Keep your code spotless.
-- [sortDependencies](https://github.com/square/gradle-dependencies-sorter) dependency, which is Sorts dependencies in build.gradle files.
+Add **JitPack repository**.
 
-## Dependency Setup
+```gradle
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
 
-Dependencies are structured in [/buildscripts](/buildscripts). App module dependencies defined using a Gradle version catalog in [libs.versions.toml](gradle/libs.versions.toml).
+Add dependency.
 
-## Danger Checks
+```gradle
+implementation("com.github.ihridoydas:AdManagerSDK:1.0.0")
+```
 
-Uses [Danger](https://danger.systems) for PR checks. See [Dangerfile](Dangerfile). Set up a Danger API key in GitHub secrets for GitHub Actions.
-we have a GitHub Actions workflow for Danger checks. In order for that to work properly, you'll need to give Danger permission to comment on your repository.
+---
 
-You can do so by navigating to Repository Settings -> Actions -> General, scroll down to Workflow Permissions and set the permissions to read and write.
+# AdMob Setup
 
-## Templates
+Add your **AdMob App ID** in `AndroidManifest.xml`.
 
-Includes [Pull Request Template](/.github/pull_request_template.md) for organized PR descriptions.
+```xml
+<meta-data
+    android:name="com.google.android.gms.ads.APPLICATION_ID"
+    android:value="ca-app-pub-xxxxxxxx~xxxxxxxx"/>
+```
+
+---
+
+# Initialize AdManager
+
+Create an `Application` class.
+
+```kotlin
+@HiltAndroidApp
+class BaseApp : Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+
+        val config = AdsConfig(
+            appOpenId = "ca-app-pub-3940256099942544/9257395921",
+            interstitialId = "ca-app-pub-3940256099942544/1033173712",
+            bannerId = "ca-app-pub-3940256099942544/6300978111",
+            nativeId = "ca-app-pub-3940256099942544/2247696110",
+            rewardedId = "ca-app-pub-3940256099942544/5224354917",
+            rewardedInterstitialId = "ca-app-pub-3940256099942544/5354046379",
+            nativeVideoId = "ca-app-pub-3940256099942544/1044960115"
+        )
+
+        AdManager.initialize(this, config)
+    }
+}
+```
+
+---
+
+# Show Interstitial Ad
+
+```kotlin
+AdManager.showInterstitial(this)
+```
+
+Example:
+
+```kotlin
+Button(onClick = {
+    AdManager.showInterstitial(this)
+}) {
+    Text("Show Ad")
+}
+```
+
+---
+
+# Show Rewarded Ad
+
+```kotlin
+AdManager.showRewarded(this) {
+
+    // reward user here
+
+}
+```
+
+---
+
+# Show Rewarded Interstitial
+
+```kotlin
+AdManager.showRewardedInterstitial(this) {
+
+    // reward callback
+
+}
+```
+
+---
+
+# App Open Ads
+
+App Open Ads automatically load and show when the app starts.
+
+No additional implementation required.
+
+---
+
+# Banner Ads (Jetpack Compose)
+
+```kotlin
+BannerAd()
+```
+
+Example:
+
+```kotlin
+Column {
+
+    Text("Home Screen")
+
+    BannerAd()
+
+}
+```
+
+---
+
+# Adaptive Banner Ads
+
+```kotlin
+AdaptiveBannerAd()
+```
+
+Adaptive banners automatically adjust to device width.
+
+---
+
+# Native Ads
+
+```kotlin
+NativeAdCard()
+```
+
+Example:
+
+```kotlin
+Column {
+
+    Text("Recommended")
+
+    NativeAdCard()
+
+}
+```
+
+---
+
+# Native Video Ads
+
+```kotlin
+NativeVideoAdCard()
+```
+
+Displays video ads when available.
+
+---
+
+# Disable Ads (Premium Users)
+
+```kotlin
+AdConfig.adsEnabled = false
+```
+
+Example:
+
+```kotlin
+if (user.isPremium) {
+    AdConfig.adsEnabled = false
+}
+```
+
+---
+
+# Test Ad IDs
+
+Use these IDs during development.
+
+App Open
+
+```
+ca-app-pub-3940256099942544/9257395921
+```
+
+Interstitial
+
+```
+ca-app-pub-3940256099942544/1033173712
+```
+
+Banner
+
+```
+ca-app-pub-3940256099942544/6300978111
+```
+
+Native
+
+```
+ca-app-pub-3940256099942544/2247696110
+```
+
+Rewarded
+
+```
+ca-app-pub-3940256099942544/5224354917
+```
+
+Rewarded Interstitial
+
+```
+ca-app-pub-3940256099942544/5354046379
+```
+
+Native Video
+
+```
+ca-app-pub-3940256099942544/1044960115
+```
+
+---
+
+# Project Structure
+
+```
+ads
+ ├ AdManager
+ ├ AdsConfig
+ ├ AdIds
+ ├ AppOpenAdManager
+ ├ InterstitialAdManager
+ ├ RewardedAdManager
+ ├ RewardedInterstitialManager
+ ├ NativeAdManager
+ ├ NativeVideoAdManager
+ ├ BannerAd
+ ├ AdaptiveBannerAd
+ ├ AdPreloader
+ ├ AdFrequency
+ └ AdCooldown
+```
+
+---
+
+# License
+
+MIT License
+
+---
+
+# Author
+
+**Hridoy Das**
+
+GitHub
+https://github.com/ihridoydas
