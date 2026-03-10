@@ -1,6 +1,7 @@
 plugins {
     id(libs.plugins.androidLibrary.get().pluginId)
     alias(libs.plugins.spotless)
+    id("maven-publish")
 }
 
 android {
@@ -21,6 +22,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+
+    publishing {
+        singleVariant("release")
     }
 }
 
@@ -45,4 +50,20 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+
+                from(components["release"])
+
+                groupId = "com.github.ihridoydas"
+                artifactId = "ads"
+                version = "1.0.0"
+
+            }
+        }
+    }
 }
