@@ -15,7 +15,7 @@ plugins {
 
 extensions.configure<ApplicationExtension>("android") {
     defaultConfig {
-        applicationId = "template.app.id"
+        applicationId = "com.hridoy.admanagersdk"
         versionCode = 1
         versionName = "1.0"
     }

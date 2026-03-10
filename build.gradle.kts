@@ -50,7 +50,6 @@ buildscript {
 
 
 apply(from = "buildscripts/githooks.gradle")
-apply(from = "buildscripts/setup.gradle")
 apply(from = "buildscripts/versionsplugin.gradle")
 
 subprojects {
@@ -100,7 +99,7 @@ subprojects {
             is AppPlugin -> {
                 extensions.configure<ApplicationExtension>("android") {
                     compileSdk = libs.versions.compileSdk.get().toInt()
-                    namespace = "template"
+                    namespace = "com.hridoy.admanagersdk"
 
                     defaultConfig {
                         minSdk = libs.versions.minSdk.get().toInt()
@@ -130,7 +129,7 @@ subprojects {
             is LibraryPlugin -> {
                 extensions.configure<LibraryExtension>("android") {
                     compileSdk = libs.versions.compileSdk.get().toInt()
-                    namespace = "template.${project.name}"
+                    namespace = "com.hridoy.admanagersdk.${project.name}"
 
                     defaultConfig {
                         minSdk = libs.versions.minSdk.get().toInt()
