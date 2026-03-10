@@ -10,17 +10,20 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id(libs.plugins.detektGradlePlugin.get().pluginId).version(libs.versions.detektGradlePlugin)
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.detektGradlePlugin) apply false
     alias(libs.plugins.paparazzi) apply false
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.ksp) apply false
-    id(libs.plugins.sortDependencies.get().pluginId).version(libs.versions.sortDependencies).apply(false)
+    alias(libs.plugins.sortDependencies) apply false
     alias(libs.plugins.kotlinter) apply false
-    id(libs.plugins.dokka.get().pluginId).version(libs.versions.dokkaVersion).apply(false)
+    alias(libs.plugins.dokka) apply false
     alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.spotless) apply false
 }
 
 buildscript {
+
 
     repositories {
         google()
@@ -31,6 +34,7 @@ buildscript {
         }
 
     }
+
 
     dependencies {
         classpath(libs.detekt.gradle.plugin)
@@ -47,6 +51,7 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
+
 
 
 apply(from = "buildscripts/githooks.gradle")
@@ -97,6 +102,7 @@ subprojects {
     plugins.whenPluginAdded {
         when (this) {
             is AppPlugin -> {
+                apply(plugin = "org.jetbrains.kotlin.plugin.compose")
                 extensions.configure<ApplicationExtension>("android") {
                     compileSdk = libs.versions.compileSdk.get().toInt()
                     namespace = "com.hridoy.admanagersdk"
@@ -127,6 +133,7 @@ subprojects {
             }
 
             is LibraryPlugin -> {
+                apply(plugin = "org.jetbrains.kotlin.plugin.compose")
                 extensions.configure<LibraryExtension>("android") {
                     compileSdk = libs.versions.compileSdk.get().toInt()
                     namespace = "com.hridoy.admanagersdk.${project.name}"

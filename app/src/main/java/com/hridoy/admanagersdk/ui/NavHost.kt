@@ -24,6 +24,7 @@
 */
 package com.hridoy.admanagersdk.ui
 
+import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
@@ -41,6 +42,7 @@ import com.hridoy.admanagersdk.screens.ViewScreen
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainAnimationNavHost(
+    activity: Activity,
     navController: NavHostController,
     languageDataStore: LanguageDataStore,
     themeDataStore: ThemeDataStore,
@@ -51,7 +53,7 @@ fun MainAnimationNavHost(
         startDestination = startDestination,
     ) {
         screen(ScreenDestinations.HomeScreen.route) {
-            HomeScreen(navController = navController, languageDataStore = languageDataStore, themeDataStore)
+            HomeScreen(activity = activity, navController = navController, languageDataStore = languageDataStore, themeDataStore)
         }
         screen(ScreenDestinations.ViewScreen.route) {
             ViewScreen(

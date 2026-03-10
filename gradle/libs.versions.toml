@@ -6,6 +6,7 @@ junitVersion = "1.1.5"
 kotlinAndroid = "2.3.10"
 kotlinJvm = "2.3.10"
 kotlinSerialization = "2.3.10"
+playServicesAds = "25.0.0"
 protobufGradlePlugin = "0.9.6"
 timber = "5.0.1"
 spotless = "8.3.0"
@@ -71,6 +72,7 @@ ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-conte
 ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-auth = { group = "io.ktor", name = "ktor-client-auth", version.ref = "ktor" }
 ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock", version.ref = "ktor" }
+play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playServicesAds" }
 protobuf-kotlinLite = { module = "com.google.protobuf:protobuf-kotlin-lite", version.ref = "protobuf" }
 protobuf-javaLite = { module = "com.google.protobuf:protobuf-javalite", version.ref = "protobuf" }
 protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }

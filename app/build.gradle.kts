@@ -132,6 +132,7 @@ androidComponents {
 }
 
 dependencies {
+    implementation(projects.ads)
     // UI
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.android.material)

@@ -22,37 +22,20 @@
 * SOFTWARE.
 *
 */
-package com.hridoy.admanagersdk.local.language
+package com.hridoy.ads
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
-import com.hridoy.admanagersdk.datastore.Language
-import com.hridoy.admanagersdk.datastore.LanguagePreferences
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+object AdFrequency {
+    private var clickCount = 0
+    var showEvery = 3
 
-class LanguageDataStore(
-    private val context: Context,
-) {
-    companion object {
-        private val Context.languageStoreData: DataStore<LanguagePreferences>
-            by dataStore(
-                fileName = "language.pb",
-                serializer = LanguageSerializer,
-            )
-    }
+    fun canShow(): Boolean {
+        clickCount++
 
-    val getLanguage: Flow<Language> =
-        context.languageStoreData.data
-            .map { it.language }
-
-    suspend fun setLanguage(language: Language) {
-        context.languageStoreData.updateData { current ->
-            current
-                .toBuilder()
-                .setLanguage(language)
-                .build()
+        if (clickCount >= showEvery) {
+            clickCount = 0
+            return true
         }
+
+        return false
     }
 }

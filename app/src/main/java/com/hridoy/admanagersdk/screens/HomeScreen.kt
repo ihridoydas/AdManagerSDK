@@ -24,10 +24,14 @@
 */
 package com.hridoy.admanagersdk.screens
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -45,7 +49,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import kotlinx.coroutines.launch
+import com.hridoy.admanagersdk.MainActivity
 import com.hridoy.admanagersdk.R
 import com.hridoy.admanagersdk.common.components.TemplatePreview
 import com.hridoy.admanagersdk.datastore.ThemePreferences
@@ -54,9 +58,13 @@ import com.hridoy.admanagersdk.local.theme.ThemeDataStore
 import com.hridoy.admanagersdk.navigation.ScreenDestinations
 import com.hridoy.admanagersdk.ui.LanguageDropdown
 import com.hridoy.admanagersdk.ui.ThemeToggleButton
+import com.hridoy.ads.AdManager
+import com.hridoy.ads.BannerAd
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
+    activity: Activity,
     navController: NavController,
     languageDataStore: LanguageDataStore,
     themeDataStore: ThemeDataStore,
@@ -121,14 +129,49 @@ fun HomeScreen(
                     color = MaterialTheme.colorScheme.background,
                 )
             }
+
+            Text(
+                text = "Ads Library Sample",
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(16.dp),
+            )
+
+            Column(
+                modifier = Modifier.padding(16.dp),
+            ) {
+                Button(
+                    onClick = {
+                        AdManager.showInterstitial(activity)
+                    },
+                ) {
+                    Text("Show Interstitial Ad")
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = {
+                        AdManager.showRewarded(activity) {
+                            println("User earned reward")
+                        }
+                    },
+                ) {
+                    Text("Show Rewarded Ad")
+                }
+            }
+
+            // banner ad at bottom
+            BannerAd()
         }
     }
 }
 
+@SuppressLint("ContextCastToActivity")
 @TemplatePreview
 @Composable
 fun HomeScreenPreview() {
     HomeScreen(
+        LocalContext.current as Activity,
         navController = rememberNavController(),
         languageDataStore = LanguageDataStore(LocalContext.current),
         themeDataStore = ThemeDataStore(LocalContext.current),

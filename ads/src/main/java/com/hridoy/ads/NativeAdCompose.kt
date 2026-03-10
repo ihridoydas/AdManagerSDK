@@ -22,37 +22,27 @@
 * SOFTWARE.
 *
 */
-package com.hridoy.admanagersdk.local.language
+package com.hridoy.ads
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
-import com.hridoy.admanagersdk.datastore.Language
-import com.hridoy.admanagersdk.datastore.LanguagePreferences
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 
-class LanguageDataStore(
-    private val context: Context,
-) {
-    companion object {
-        private val Context.languageStoreData: DataStore<LanguagePreferences>
-            by dataStore(
-                fileName = "language.pb",
-                serializer = LanguageSerializer,
-            )
-    }
+@Composable
+fun NativeAdCard() {
+    val ad = NativeAdManager.nativeAd ?: return
 
-    val getLanguage: Flow<Language> =
-        context.languageStoreData.data
-            .map { it.language }
+    Card {
+        Column {
+            Text(ad.headline ?: "")
 
-    suspend fun setLanguage(language: Language) {
-        context.languageStoreData.updateData { current ->
-            current
-                .toBuilder()
-                .setLanguage(language)
-                .build()
+            Text(ad.body ?: "")
+
+            Button(onClick = { }) {
+                Text("Install")
+            }
         }
     }
 }

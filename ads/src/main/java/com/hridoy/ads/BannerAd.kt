@@ -22,37 +22,28 @@
 * SOFTWARE.
 *
 */
-package com.hridoy.admanagersdk.local.language
+package com.hridoy.ads
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
-import com.hridoy.admanagersdk.datastore.Language
-import com.hridoy.admanagersdk.datastore.LanguagePreferences
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.viewinterop.AndroidView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 
-class LanguageDataStore(
-    private val context: Context,
-) {
-    companion object {
-        private val Context.languageStoreData: DataStore<LanguagePreferences>
-            by dataStore(
-                fileName = "language.pb",
-                serializer = LanguageSerializer,
-            )
-    }
+@Composable
+fun BannerAd() {
+    if (!AdConfig.bannerEnabled) return
 
-    val getLanguage: Flow<Language> =
-        context.languageStoreData.data
-            .map { it.language }
+    AndroidView(
+        factory = { context ->
 
-    suspend fun setLanguage(language: Language) {
-        context.languageStoreData.updateData { current ->
-            current
-                .toBuilder()
-                .setLanguage(language)
-                .build()
-        }
-    }
+            AdView(context).apply {
+                setAdSize(AdSize.BANNER)
+
+                adUnitId = AdIds.banner
+
+                loadAd(AdRequest.Builder().build())
+            }
+        },
+    )
 }

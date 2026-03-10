@@ -27,9 +27,9 @@ package com.hridoy.admanagersdk.local.theme
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
+import com.hridoy.admanagersdk.datastore.ThemePreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import com.hridoy.admanagersdk.datastore.ThemePreferences
 
 class ThemeDataStore(
     private val context: Context,

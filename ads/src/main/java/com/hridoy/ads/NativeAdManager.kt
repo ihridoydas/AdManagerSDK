@@ -22,37 +22,23 @@
 * SOFTWARE.
 *
 */
-package com.hridoy.admanagersdk.local.language
+package com.hridoy.ads
 
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
-import com.hridoy.admanagersdk.datastore.Language
-import com.hridoy.admanagersdk.datastore.LanguagePreferences
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import com.google.android.gms.ads.AdLoader
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.nativead.NativeAd
 
-class LanguageDataStore(
-    private val context: Context,
-) {
-    companion object {
-        private val Context.languageStoreData: DataStore<LanguagePreferences>
-            by dataStore(
-                fileName = "language.pb",
-                serializer = LanguageSerializer,
-            )
-    }
+object NativeAdManager {
+    var nativeAd: NativeAd? = null
 
-    val getLanguage: Flow<Language> =
-        context.languageStoreData.data
-            .map { it.language }
+    fun load(context: Context) {
+        val loader = AdLoader
+            .Builder(context, AdIds.native)
+            .forNativeAd {
+                nativeAd = it
+            }.build()
 
-    suspend fun setLanguage(language: Language) {
-        context.languageStoreData.updateData { current ->
-            current
-                .toBuilder()
-                .setLanguage(language)
-                .build()
-        }
+        loader.loadAd(AdRequest.Builder().build())
     }
 }

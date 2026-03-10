@@ -22,37 +22,42 @@
 * SOFTWARE.
 *
 */
-package com.hridoy.admanagersdk.local.language
+package com.hridoy.ads
 
+import android.app.Activity
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
-import com.hridoy.admanagersdk.datastore.Language
-import com.hridoy.admanagersdk.datastore.LanguagePreferences
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 
-class LanguageDataStore(
-    private val context: Context,
-) {
-    companion object {
-        private val Context.languageStoreData: DataStore<LanguagePreferences>
-            by dataStore(
-                fileName = "language.pb",
-                serializer = LanguageSerializer,
-            )
+object RewardedAdManager {
+    private var ad: RewardedAd? = null
+
+    fun load(context: Context) {
+        if (AdIds.rewarded.isEmpty()) return
+
+        RewardedAd.load(
+            context,
+            AdIds.rewarded,
+            AdRequest.Builder().build(),
+            object : RewardedAdLoadCallback() {
+                override fun onAdLoaded(rewardedAd: RewardedAd) {
+                    ad = rewardedAd
+                }
+            },
+        )
     }
 
-    val getLanguage: Flow<Language> =
-        context.languageStoreData.data
-            .map { it.language }
-
-    suspend fun setLanguage(language: Language) {
-        context.languageStoreData.updateData { current ->
-            current
-                .toBuilder()
-                .setLanguage(language)
-                .build()
+    fun show(
+        activity: Activity,
+        reward: () -> Unit,
+    ) {
+        ad?.show(activity) {
+            reward()
         }
+
+        ad = null
+
+        load(activity)
     }
 }

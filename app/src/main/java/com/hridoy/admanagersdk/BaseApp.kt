@@ -25,7 +25,38 @@
 package com.hridoy.admanagersdk
 
 import android.app.Application
+import com.hridoy.admanagersdk.util.TestAdIds
+import com.hridoy.ads.AdManager
+import com.hridoy.ads.AdsConfig
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class BaseApp : Application()
+class BaseApp : Application() {
+    override fun onCreate() {
+        super.onCreate()
+
+        val config = if (BuildConfig.DEBUG) {
+            AdsConfig(
+                appOpenId = TestAdIds.APP_OPEN,
+                interstitialId = TestAdIds.INTERSTITIAL,
+                bannerId = TestAdIds.BANNER,
+                nativeId = TestAdIds.NATIVE,
+                rewardedId = TestAdIds.REWARDED,
+                rewardedInterstitialId = TestAdIds.REWARDED_INTERSTITIAL,
+                nativeVideoId = TestAdIds.NATIVE_VIDEO,
+            )
+        } else {
+            AdsConfig(
+                appOpenId = "real-app-open-id",
+                interstitialId = "real-interstitial-id",
+                bannerId = "real-banner-id",
+                nativeId = "real-native-id",
+                rewardedId = "real-rewarded-id",
+                rewardedInterstitialId = "real-rewarded-interstitial-id",
+                nativeVideoId = "real-native-video-id",
+            )
+        }
+
+        AdManager.initialize(this, config)
+    }
+}

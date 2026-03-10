@@ -22,37 +22,22 @@
 * SOFTWARE.
 *
 */
-package com.hridoy.admanagersdk.local.language
+package com.hridoy.admanagersdk.util
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
-import com.hridoy.admanagersdk.datastore.Language
-import com.hridoy.admanagersdk.datastore.LanguagePreferences
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+object TestAdIds {
+    const val APP_OPEN = "ca-app-pub-3940256099942544/9257395921"
 
-class LanguageDataStore(
-    private val context: Context,
-) {
-    companion object {
-        private val Context.languageStoreData: DataStore<LanguagePreferences>
-            by dataStore(
-                fileName = "language.pb",
-                serializer = LanguageSerializer,
-            )
-    }
+    const val ADAPTIVE_BANNER = "ca-app-pub-3940256099942544/9214589741"
 
-    val getLanguage: Flow<Language> =
-        context.languageStoreData.data
-            .map { it.language }
+    const val BANNER = "ca-app-pub-3940256099942544/6300978111"
 
-    suspend fun setLanguage(language: Language) {
-        context.languageStoreData.updateData { current ->
-            current
-                .toBuilder()
-                .setLanguage(language)
-                .build()
-        }
-    }
+    const val INTERSTITIAL = "ca-app-pub-3940256099942544/1033173712"
+
+    const val REWARDED = "ca-app-pub-3940256099942544/5224354917"
+
+    const val REWARDED_INTERSTITIAL = "ca-app-pub-3940256099942544/5354046379"
+
+    const val NATIVE = "ca-app-pub-3940256099942544/2247696110"
+
+    const val NATIVE_VIDEO = "ca-app-pub-3940256099942544/1044960115"
 }

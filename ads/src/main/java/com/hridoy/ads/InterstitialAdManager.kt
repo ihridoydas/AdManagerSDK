@@ -22,37 +22,44 @@
 * SOFTWARE.
 *
 */
-package com.hridoy.admanagersdk.local.language
+package com.hridoy.ads
 
+import android.app.Activity
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
-import com.hridoy.admanagersdk.datastore.Language
-import com.hridoy.admanagersdk.datastore.LanguagePreferences
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 
-class LanguageDataStore(
-    private val context: Context,
-) {
-    companion object {
-        private val Context.languageStoreData: DataStore<LanguagePreferences>
-            by dataStore(
-                fileName = "language.pb",
-                serializer = LanguageSerializer,
-            )
+object InterstitialAdManager {
+    private var ad: InterstitialAd? = null
+
+    fun load(context: Context) {
+        if (AdIds.interstitial.isEmpty()) return
+
+        val request = AdRequest.Builder().build()
+
+        InterstitialAd.load(
+            context,
+            AdIds.interstitial,
+            request,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    ad = interstitialAd
+                }
+
+                override fun onAdFailedToLoad(p0: LoadAdError) {
+                    ad = null
+                }
+            },
+        )
     }
 
-    val getLanguage: Flow<Language> =
-        context.languageStoreData.data
-            .map { it.language }
+    fun show(activity: Activity) {
+        ad?.show(activity)
 
-    suspend fun setLanguage(language: Language) {
-        context.languageStoreData.updateData { current ->
-            current
-                .toBuilder()
-                .setLanguage(language)
-                .build()
-        }
+        ad = null
+
+        load(activity)
     }
 }

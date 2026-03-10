@@ -22,37 +22,19 @@
 * SOFTWARE.
 *
 */
-package com.hridoy.admanagersdk.local.language
+package com.hridoy.ads
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
-import com.hridoy.admanagersdk.datastore.Language
-import com.hridoy.admanagersdk.datastore.LanguagePreferences
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+object AdCooldown {
+    private var lastAdTime = 0L
 
-class LanguageDataStore(
-    private val context: Context,
-) {
-    companion object {
-        private val Context.languageStoreData: DataStore<LanguagePreferences>
-            by dataStore(
-                fileName = "language.pb",
-                serializer = LanguageSerializer,
-            )
-    }
+    fun canShow(): Boolean {
+        val now = System.currentTimeMillis()
 
-    val getLanguage: Flow<Language> =
-        context.languageStoreData.data
-            .map { it.language }
-
-    suspend fun setLanguage(language: Language) {
-        context.languageStoreData.updateData { current ->
-            current
-                .toBuilder()
-                .setLanguage(language)
-                .build()
+        if (now - lastAdTime > AdConfig.interstitialCooldownSeconds * 1000) {
+            lastAdTime = now
+            return true
         }
+
+        return false
     }
 }

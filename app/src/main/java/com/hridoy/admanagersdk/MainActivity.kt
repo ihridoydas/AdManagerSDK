@@ -46,9 +46,6 @@ import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import com.hridoy.admanagersdk.common.DURATION
 import com.hridoy.admanagersdk.common.VALUES_X
 import com.hridoy.admanagersdk.common.VALUES_Y
@@ -60,6 +57,10 @@ import com.hridoy.admanagersdk.theme.MyMaterialTheme
 import com.hridoy.admanagersdk.theme.splashScreen.SplashViewModel
 import com.hridoy.admanagersdk.ui.MainAnimationNavHost
 import com.hridoy.admanagersdk.util.Utils
+import com.hridoy.ads.AppOpenAdManager
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -143,10 +144,20 @@ class MainActivity : AppCompatActivity() {
                     color = MaterialTheme.colorScheme.background,
                 ) {
                     val navController = rememberNavController()
-                    MainAnimationNavHost(navController, languageDataStore, themeDataStore)
+                    MainAnimationNavHost(
+                        this,
+                        navController,
+                        languageDataStore,
+                        themeDataStore,
+                    )
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        AppOpenAdManager.show(this)
     }
 
     /**

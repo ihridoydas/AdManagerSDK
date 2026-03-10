@@ -22,37 +22,42 @@
 * SOFTWARE.
 *
 */
-package com.hridoy.admanagersdk.local.language
+package com.hridoy.ads
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
-import com.hridoy.admanagersdk.datastore.Language
-import com.hridoy.admanagersdk.datastore.LanguagePreferences
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.viewinterop.AndroidView
+import com.google.android.gms.ads.nativead.MediaView
 
-class LanguageDataStore(
-    private val context: Context,
-) {
-    companion object {
-        private val Context.languageStoreData: DataStore<LanguagePreferences>
-            by dataStore(
-                fileName = "language.pb",
-                serializer = LanguageSerializer,
-            )
-    }
+@Composable
+fun NativeVideoAdCard() {
+    val ad = NativeVideoAdManager.nativeVideoAd ?: return
 
-    val getLanguage: Flow<Language> =
-        context.languageStoreData.data
-            .map { it.language }
+    Card {
+        Column {
+            Text(text = ad.headline ?: "")
 
-    suspend fun setLanguage(language: Language) {
-        context.languageStoreData.updateData { current ->
-            current
-                .toBuilder()
-                .setLanguage(language)
-                .build()
+            ad.mediaContent?.let { media ->
+
+                AndroidView(
+                    factory = { context ->
+
+                        MediaView(context).apply {
+                            setMediaContent(media)
+                        }
+                    },
+                )
+            }
         }
     }
 }
+
+/*Column {
+
+    Text("Recommended")
+
+    NativeVideoAdCard()
+
+}*/

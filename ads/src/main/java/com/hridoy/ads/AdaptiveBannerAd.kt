@@ -22,37 +22,40 @@
 * SOFTWARE.
 *
 */
-package com.hridoy.admanagersdk.local.language
+package com.hridoy.ads
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
-import com.hridoy.admanagersdk.datastore.Language
-import com.hridoy.admanagersdk.datastore.LanguagePreferences
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.viewinterop.AndroidView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+// Use like this
+// AdaptiveBannerAd()
 
-class LanguageDataStore(
-    private val context: Context,
-) {
-    companion object {
-        private val Context.languageStoreData: DataStore<LanguagePreferences>
-            by dataStore(
-                fileName = "language.pb",
-                serializer = LanguageSerializer,
+@Composable
+fun AdaptiveBannerAd() {
+    val context = LocalContext.current
+
+    AndroidView(
+        factory = {
+            val adView = AdView(it)
+
+            adView.adUnitId = AdIds.banner
+
+            val displayMetrics = it.resources.displayMetrics
+            val adWidth = (displayMetrics.widthPixels / displayMetrics.density).toInt()
+
+            adView.setAdSize(
+                AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
+                    it,
+                    adWidth,
+                ),
             )
-    }
 
-    val getLanguage: Flow<Language> =
-        context.languageStoreData.data
-            .map { it.language }
+            adView.loadAd(AdRequest.Builder().build())
 
-    suspend fun setLanguage(language: Language) {
-        context.languageStoreData.updateData { current ->
-            current
-                .toBuilder()
-                .setLanguage(language)
-                .build()
-        }
-    }
+            adView
+        },
+    )
 }
