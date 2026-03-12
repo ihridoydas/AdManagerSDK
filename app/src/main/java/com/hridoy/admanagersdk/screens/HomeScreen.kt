@@ -137,6 +137,8 @@ fun HomeScreen(
             )
 
             Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
                 modifier = Modifier.padding(16.dp),
             ) {
                 Button(
@@ -146,6 +148,12 @@ fun HomeScreen(
                 ) {
                     Text("Show Interstitial Ad")
                 }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text("Adaptive Banner")
+
+                AdManager.AdaptiveBannerShow()
 
                 Spacer(modifier = Modifier.height(16.dp))
 

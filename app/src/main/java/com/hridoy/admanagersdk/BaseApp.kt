@@ -38,6 +38,7 @@ class BaseApp : Application() {
         val config = if (BuildConfig.DEBUG) {
             AdsConfig(
                 appOpenId = TestAdIds.APP_OPEN,
+                adaptiveBannerId = TestAdIds.ADAPTIVE_BANNER,
                 interstitialId = TestAdIds.INTERSTITIAL,
                 bannerId = TestAdIds.BANNER,
                 nativeId = TestAdIds.NATIVE,
@@ -48,6 +49,7 @@ class BaseApp : Application() {
         } else {
             AdsConfig(
                 appOpenId = "real-app-open-id",
+                adaptiveBannerId = "real-adaptive-banner-id",
                 interstitialId = "real-interstitial-id",
                 bannerId = "real-banner-id",
                 nativeId = "real-native-id",

@@ -32,6 +32,8 @@ object AdConfig {
     var rewardedEnabled = true
     var bannerEnabled = true
     var nativeEnabled = true
+    var rewardedInterstitialEnabled = true
+    var nativeVideoEnabled = true
 
     var interstitialCooldownSeconds = 30L
 }

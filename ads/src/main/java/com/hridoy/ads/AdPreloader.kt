@@ -28,16 +28,33 @@ import android.content.Context
 
 object AdPreloader {
     fun preload(context: Context) {
-        InterstitialAdManager.load(context)
 
-        RewardedAdManager.load(context)
+        if (!AdConfig.adsEnabled) return
 
-        AppOpenAdManager.load(context)
+        val appContext = context.applicationContext
 
-        NativeAdManager.load(context)
+        if (AdConfig.interstitialEnabled) {
+            InterstitialAdManager.load(appContext)
+        }
 
-        NativeVideoAdManager.load(context)
+        if (AdConfig.rewardedEnabled) {
+            RewardedAdManager.load(appContext)
+        }
 
-        RewardedInterstitialManager.load(context)
+        if (AdConfig.appOpenEnabled) {
+            AppOpenAdManager.load(appContext)
+        }
+
+        if (AdConfig.nativeEnabled) {
+            NativeAdManager.load(appContext)
+        }
+
+        if (AdConfig.nativeVideoEnabled) {
+            NativeVideoAdManager.load(appContext)
+        }
+
+        if (AdConfig.rewardedInterstitialEnabled) {
+            RewardedInterstitialManager.load(appContext)
+        }
     }
 }

@@ -61,7 +61,7 @@ afterEvaluate {
 
                 groupId = "com.github.ihridoydas"
                 artifactId = "ads"
-                version = "1.0.2"
+                version = "2.0.0"
 
             }
         }

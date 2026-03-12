@@ -26,6 +26,7 @@ package com.hridoy.ads
 
 data class AdsConfig(
     val appOpenId: String,
+    val adaptiveBannerId: String = "",
     val interstitialId: String,
     val bannerId: String,
     val nativeId: String,

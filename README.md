@@ -46,7 +46,7 @@ dependencyResolutionManagement {
 Add dependency.
 
 ```gradle
-implementation("com.github.ihridoydas:AdManagerSDK:1.0.2")
+implementation("com.github.ihridoydas:AdManagerSDK:2.0.0")
 ```
 
 ---
@@ -76,6 +76,7 @@ class BaseApp : Application() {
 
         val config = AdsConfig(
             appOpenId = "ca-app-pub-3940256099942544/9257395921",
+            adaptiveBannerId = "ca-app-pub-3940256099942544/9214589741",
             interstitialId = "ca-app-pub-3940256099942544/1033173712",
             bannerId = "ca-app-pub-3940256099942544/6300978111",
             nativeId = "ca-app-pub-3940256099942544/2247696110",
@@ -164,7 +165,7 @@ Column {
 # Adaptive Banner Ads
 
 ```kotlin
-AdaptiveBannerAd()
+AdManager.AdaptiveBannerShow()
 ```
 
 Adaptive banners automatically adjust to device width.
@@ -280,6 +281,7 @@ ads
  ├ NativeVideoAdManager
  ├ BannerAd
  ├ AdaptiveBannerAd
+ ├ AdaptiveBanner
  ├ AdPreloader
  ├ AdFrequency
  └ AdCooldown

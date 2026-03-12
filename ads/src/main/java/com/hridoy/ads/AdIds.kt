@@ -26,6 +26,7 @@ package com.hridoy.ads
 
 object AdIds {
     var appOpen = ""
+    var adaptiveBanner = ""
     var interstitial = ""
     var rewarded = ""
     var banner = ""

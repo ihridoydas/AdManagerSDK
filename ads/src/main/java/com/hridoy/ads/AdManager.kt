@@ -26,6 +26,7 @@ package com.hridoy.ads
 
 import android.app.Activity
 import android.app.Application
+import androidx.compose.runtime.Composable
 import com.google.android.gms.ads.MobileAds
 
 object AdManager {
@@ -40,6 +41,7 @@ object AdManager {
         MobileAds.initialize(application)
 
         AdIds.appOpen = config.appOpenId
+        AdIds.adaptiveBanner = config.adaptiveBannerId
         AdIds.interstitial = config.interstitialId
         AdIds.banner = config.bannerId
         AdIds.native = config.nativeId
@@ -88,4 +90,13 @@ object AdManager {
 //        Toast.makeText(this, "Reward Granted!", Toast.LENGTH_SHORT).show()
 //
 //    }
+
+    @Composable
+    fun AdaptiveBannerShow() {
+
+        if (!AdConfig.adsEnabled) return
+        if (!AdConfig.bannerEnabled) return
+
+        AdaptiveBanner()
+    }
 }
