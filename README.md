@@ -46,7 +46,7 @@ dependencyResolutionManagement {
 Add dependency.
 
 ```gradle
-implementation("com.github.ihridoydas:AdManagerSDK:2.0.0")
+implementation("com.github.ihridoydas:AdManagerSDK:3.0.0")
 ```
 
 ---
