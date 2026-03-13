@@ -28,7 +28,6 @@ import android.content.Context
 
 object AdPreloader {
     fun preload(context: Context) {
-
         if (!AdConfig.adsEnabled) return
 
         val appContext = context.applicationContext

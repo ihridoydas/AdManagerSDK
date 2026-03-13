@@ -31,7 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.hridoy.admanagersdk.local.language.LanguageDataStore
-import com.hridoy.admanagersdk.local.theme.ThemeDataStore
+import com.hridoy.admanagersdk.local.theme.ThemeLocalDataStore
 import com.hridoy.admanagersdk.navigation.ScreenDestinations
 import com.hridoy.admanagersdk.navigation.canGoBack
 import com.hridoy.admanagersdk.navigation.navigateTo
@@ -45,7 +45,7 @@ fun MainAnimationNavHost(
     activity: Activity,
     navController: NavHostController,
     languageDataStore: LanguageDataStore,
-    themeDataStore: ThemeDataStore,
+    themeDataStore: ThemeLocalDataStore,
     startDestination: String = ScreenDestinations.HomeScreen.route,
 ) {
     NavHost(
@@ -53,7 +53,12 @@ fun MainAnimationNavHost(
         startDestination = startDestination,
     ) {
         screen(ScreenDestinations.HomeScreen.route) {
-            HomeScreen(activity = activity, navController = navController, languageDataStore = languageDataStore, themeDataStore)
+            HomeScreen(
+                activity = activity,
+                navController = navController,
+                languageDataStore = languageDataStore,
+                themeDataStore = themeDataStore,
+            )
         }
         screen(ScreenDestinations.ViewScreen.route) {
             ViewScreen(

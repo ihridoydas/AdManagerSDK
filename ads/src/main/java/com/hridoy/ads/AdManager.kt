@@ -55,12 +55,14 @@ object AdManager {
     }
 
     fun showInterstitial(activity: Activity) {
-        if (!AdConfig.adsEnabled) return
-        if (!AdConfig.interstitialEnabled) return
-        if (!AdFrequency.canShow()) return
-        if (!AdCooldown.canShow()) return
+        val shouldShow = AdConfig.adsEnabled &&
+            AdConfig.interstitialEnabled &&
+            AdFrequency.canShow() &&
+            AdCooldown.canShow()
 
-        InterstitialAdManager.show(activity)
+        if (shouldShow) {
+            InterstitialAdManager.show(activity)
+        }
     }
 
     fun showRewarded(
@@ -93,7 +95,6 @@ object AdManager {
 
     @Composable
     fun AdaptiveBannerShow() {
-
         if (!AdConfig.adsEnabled) return
         if (!AdConfig.bannerEnabled) return
 

@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.kotlin.android) apply false
-    alias(libs.plugins.detektGradlePlugin) apply false
+    alias(libs.plugins.detektGradlePlugin)
     alias(libs.plugins.paparazzi) apply false
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.ksp) apply false
@@ -23,8 +23,6 @@ plugins {
 }
 
 buildscript {
-
-
     repositories {
         google()
         mavenCentral()
@@ -32,9 +30,7 @@ buildscript {
         maven {
             setUrl("https://jitpack.io")
         }
-
     }
-
 
     dependencies {
         classpath(libs.detekt.gradle.plugin)
@@ -46,13 +42,15 @@ buildscript {
         classpath(libs.protobuf.gradle.plugin)
         classpath(libs.dokkaDocumentation.get())
         classpath(libs.dokka.gradle.plugin)
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
-
+// Ensure the 'detekt' configuration has the necessary dependencies for the CLI to run
+val detektConfig by configurations.creating
+dependencies {
+    detektConfig("io.gitlab.arturbosch.detekt:detekt-cli:${libs.versions.detektGradlePlugin.get()}")
+    detektConfig("io.gitlab.arturbosch.detekt:detekt-formatting:${libs.versions.detektGradlePlugin.get()}")
+}
 
 apply(from = "buildscripts/githooks.gradle")
 apply(from = "buildscripts/versionsplugin.gradle")
@@ -96,6 +94,8 @@ tasks.register<io.gitlab.arturbosch.detekt.Detekt>("detektAll") {
     exclude("**/build/**")
     config.setFrom(project.layout.projectDirectory.file("config/detekt/detekt.yml"))
     buildUponDefaultConfig = false
+    jvmTarget = "17"
+    detektClasspath.setFrom(detektConfig)
 }
 
 subprojects {

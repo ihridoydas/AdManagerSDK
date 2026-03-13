@@ -25,6 +25,8 @@
 package com.hridoy.ads
 
 object AdConfig {
+    private const val DEFAULT_INTERSTITIAL_COOLDOWN = 30L
+
     var adsEnabled = true
 
     var appOpenEnabled = true
@@ -35,5 +37,5 @@ object AdConfig {
     var rewardedInterstitialEnabled = true
     var nativeVideoEnabled = true
 
-    var interstitialCooldownSeconds = 30L
+    var interstitialCooldownSeconds = DEFAULT_INTERSTITIAL_COOLDOWN
 }

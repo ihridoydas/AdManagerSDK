@@ -132,7 +132,6 @@ androidComponents {
 }
 
 dependencies {
-    implementation(projects.ads)
     // UI
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.android.material)
@@ -163,6 +162,7 @@ dependencies {
     implementation(libs.square.retrofit)
     implementation(libs.square.retrofit.converter.moshi)
     implementation(libs.timber)
+    implementation(projects.ads)
     //Module
     implementation(projects.common)
     implementation(projects.navigation)

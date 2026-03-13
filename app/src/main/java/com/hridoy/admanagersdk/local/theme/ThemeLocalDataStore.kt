@@ -31,23 +31,23 @@ import com.hridoy.admanagersdk.datastore.ThemePreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class ThemeDataStore(
+class ThemeLocalDataStore(
     private val context: Context,
 ) {
     companion object {
-        private val Context.themeDataStore: DataStore<ThemePreferences> by dataStore(
+        private val Context.themeDataStorage: DataStore<ThemePreferences> by dataStore(
             fileName = "theme.pb",
             serializer = ThemeSerializer,
         )
     }
 
     val themeMode: Flow<ThemePreferences.ThemeMode> =
-        context.themeDataStore.data.map {
+        context.themeDataStorage.data.map {
             it.themeMode
         }
 
     suspend fun setThemeMode(mode: ThemePreferences.ThemeMode) {
-        context.themeDataStore.updateData { current ->
+        context.themeDataStorage.updateData { current ->
             current
                 .toBuilder()
                 .setThemeMode(mode)

@@ -25,12 +25,14 @@
 package com.hridoy.ads
 
 object AdCooldown {
+    private const val MILLIS_IN_SECOND = 1000L
+
     private var lastAdTime = 0L
 
     fun canShow(): Boolean {
         val now = System.currentTimeMillis()
 
-        if (now - lastAdTime > AdConfig.interstitialCooldownSeconds * 1000) {
+        if (now - lastAdTime > AdConfig.interstitialCooldownSeconds * MILLIS_IN_SECOND) {
             lastAdTime = now
             return true
         }

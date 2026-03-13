@@ -25,8 +25,10 @@
 package com.hridoy.ads
 
 object AdFrequency {
+    private const val DEFAULT_SHOW_EVERY = 3
+
     private var clickCount = 0
-    var showEvery = 3
+    var showEvery = DEFAULT_SHOW_EVERY
 
     fun canShow(): Boolean {
         clickCount++

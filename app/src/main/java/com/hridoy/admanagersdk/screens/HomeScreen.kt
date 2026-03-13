@@ -49,12 +49,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.hridoy.admanagersdk.MainActivity
 import com.hridoy.admanagersdk.R
 import com.hridoy.admanagersdk.common.components.TemplatePreview
 import com.hridoy.admanagersdk.datastore.ThemePreferences
 import com.hridoy.admanagersdk.local.language.LanguageDataStore
-import com.hridoy.admanagersdk.local.theme.ThemeDataStore
+import com.hridoy.admanagersdk.local.theme.ThemeLocalDataStore
 import com.hridoy.admanagersdk.navigation.ScreenDestinations
 import com.hridoy.admanagersdk.ui.LanguageDropdown
 import com.hridoy.admanagersdk.ui.ThemeToggleButton
@@ -67,7 +66,7 @@ fun HomeScreen(
     activity: Activity,
     navController: NavController,
     languageDataStore: LanguageDataStore,
-    themeDataStore: ThemeDataStore,
+    themeDataStore: ThemeLocalDataStore,
 ) {
     val themeMode by themeDataStore.themeMode
         .collectAsState(initial = ThemePreferences.ThemeMode.SYSTEM)
@@ -182,6 +181,6 @@ fun HomeScreenPreview() {
         LocalContext.current as Activity,
         navController = rememberNavController(),
         languageDataStore = LanguageDataStore(LocalContext.current),
-        themeDataStore = ThemeDataStore(LocalContext.current),
+        themeDataStore = ThemeLocalDataStore(LocalContext.current),
     )
 }

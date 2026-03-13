@@ -52,7 +52,7 @@ import com.hridoy.admanagersdk.common.VALUES_Y
 import com.hridoy.admanagersdk.common.utils.RootUtil
 import com.hridoy.admanagersdk.datastore.ThemePreferences
 import com.hridoy.admanagersdk.local.language.LanguageDataStore
-import com.hridoy.admanagersdk.local.theme.ThemeDataStore
+import com.hridoy.admanagersdk.local.theme.ThemeLocalDataStore
 import com.hridoy.admanagersdk.theme.MyMaterialTheme
 import com.hridoy.admanagersdk.theme.splashScreen.SplashViewModel
 import com.hridoy.admanagersdk.ui.MainAnimationNavHost
@@ -71,14 +71,14 @@ class MainActivity : AppCompatActivity() {
 
     private val splashViewModel: SplashViewModel by viewModels()
     private lateinit var languageDataStore: LanguageDataStore
-    private lateinit var themeDataStore: ThemeDataStore
+    private lateinit var themeDataStore: ThemeLocalDataStore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Initialize DataStores immediately to prevent UninitializedPropertyAccessException
         languageDataStore = LanguageDataStore(this)
-        themeDataStore = ThemeDataStore(this)
+        themeDataStore = ThemeLocalDataStore(this)
 
         configureEdgeToEdgeWindow()
 
